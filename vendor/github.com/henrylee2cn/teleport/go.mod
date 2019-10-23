@@ -1,4 +1,4 @@
-module github.com/henrylee2cn/teleport
+module github.com/weblazy/teleport
 
 go 1.12
 

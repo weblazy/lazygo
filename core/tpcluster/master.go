@@ -3,7 +3,7 @@ package tpcluster
 import (
 	// "encoding/json"
 	// "fmt"
-	"github.com/henrylee2cn/teleport"
+	"github.com/weblazy/teleport"
 	"lazygo/core/logx"
 	"lazygo/core/timingwheel"
 	"time"
@@ -56,14 +56,9 @@ func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 		startTime:    time.Now(),
 		timer:        timer,
 	}
-	peer := tp.NewPeer(cfg.MasterPeerConf,func(session *tp.Session){
-
-	}, globalLeftPlugin...)
+	peer := tp.NewPeer(cfg.MasterPeerConf, globalLeftPlugin...)
 	master := new(Master)
 	peer.RouteCall(master)
-	peer.OnConnect = func(p *tp.Peer)(){
-
-	}
 	peer.ListenAndServe()
 
 }
@@ -129,7 +124,4 @@ func (m *Master) broadcastAddresses() {
 	}
 }
 
-func (m *Master)OnClose(){
-	
-	
-}
+

@@ -1,7 +1,7 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/weblazy/teleport"
 	"lazygo/core/logx"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/weblazy/teleport"
 )
 
 func main() {

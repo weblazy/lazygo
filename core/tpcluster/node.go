@@ -1,7 +1,7 @@
 package tpcluster
 
 import (
-	"github.com/henrylee2cn/teleport"
+	"github.com/weblazy/teleport"
 	"lazygo/core/logx"
 	"lazygo/core/mapreduce"
 	"lazygo/core/timingwheel"
@@ -231,4 +231,3 @@ func SendToGroup(gid string, path string, req interface{}) (int, *tp.Status) {
 	}
 	return 0, nil
 }
-

@@ -2,7 +2,7 @@ package main
 
 import (
 	// "fmt"
-	"github.com/henrylee2cn/teleport"
+	"github.com/weblazy/teleport"
 	"lazygo/core/logx"
 	"lazygo/core/tpcluster"
 	// "time"

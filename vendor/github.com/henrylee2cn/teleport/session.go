@@ -27,9 +27,9 @@ import (
 
 	"github.com/henrylee2cn/goutil"
 	"github.com/henrylee2cn/goutil/coarsetime"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/utils"
+	"github.com/weblazy/teleport/codec"
+	"github.com/weblazy/teleport/socket"
+	"github.com/weblazy/teleport/utils"
 )
 
 type (
