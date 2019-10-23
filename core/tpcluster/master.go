@@ -56,7 +56,9 @@ func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 		startTime:    time.Now(),
 		timer:        timer,
 	}
-	peer := tp.NewPeer(cfg.MasterPeerConf, globalLeftPlugin...)
+	peer := tp.NewPeer(cfg.MasterPeerConf, func(session tp.Session) {
+		logx.Errorf("node onConnect to master %s", session.ID())
+	}, globalLeftPlugin...)
 	master := new(Master)
 	peer.RouteCall(master)
 	peer.ListenAndServe()
@@ -123,5 +125,3 @@ func (m *Master) broadcastAddresses() {
 		)
 	}
 }
-
-

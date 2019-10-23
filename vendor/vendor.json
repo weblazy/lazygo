@@ -71,48 +71,6 @@
 			"revisionTime": "2019-09-25T10:25:25Z"
 		},
 		{
-			"checksumSHA1": "5AeUuRy3usVz6HiZFvNkJzWrxLQ=",
-			"path": "github.com/weblazy/teleport",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "edhLt8Q1zrNlToh2BeEFBMsePg4=",
-			"path": "github.com/weblazy/teleport/codec",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "924rRT8eFRsA+XUlXBBs43vgU4s=",
-			"path": "github.com/weblazy/teleport/quic",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "ANW0bBzpUgprADrIxCX84xrP+S0=",
-			"path": "github.com/weblazy/teleport/socket",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "9BCuM9eOcnhuwmU9ph2Bg5EbHs4=",
-			"path": "github.com/weblazy/teleport/utils",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "Lk4o7hO7BxY8rQTyEMnAYmJa3tI=",
-			"path": "github.com/weblazy/teleport/utils/color",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
-			"checksumSHA1": "uTvZNFRZyQ9RKK/iHy2zBdDQ37Q=",
-			"path": "github.com/weblazy/teleport/xfer",
-			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
-			"revisionTime": "2019-09-18T14:26:54Z"
-		},
-		{
 			"checksumSHA1": "IJyeuhvvpCoUChIdi35TPQ2R82A=",
 			"path": "github.com/json-iterator/go",
 			"revision": "03217c3e97663914aec3faafde50d081f197a0a2",
@@ -221,10 +179,22 @@
 			"revisionTime": "2018-07-18T01:23:57Z"
 		},
 		{
+			"checksumSHA1": "ssKkapZLmvlDTmKWf7a/d5R0lVs=",
+			"path": "github.com/weblazy/teleport",
+			"revision": "3fc156f015ee1f4a1f7bd46dffbe887a98458d4a",
+			"revisionTime": "2019-10-23T08:33:08Z"
+		},
+		{
 			"checksumSHA1": "/2TaLkbwdfI0TfHaB2x2Qw1EGHM=",
 			"path": "github.com/weblazy/teleport",
 			"revision": "d16b27b021dc3ee1f3233d13501bdfd882f81383",
 			"revisionTime": "2019-10-23T07:54:00Z"
+		},
+		{
+			"checksumSHA1": "edhLt8Q1zrNlToh2BeEFBMsePg4=",
+			"path": "github.com/weblazy/teleport/codec",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
 		},
 		{
 			"checksumSHA1": "VKPaoYtYMa+Hrr+21IBKbsNpJwo=",
@@ -239,10 +209,22 @@
 			"revisionTime": "2019-10-23T07:54:00Z"
 		},
 		{
+			"checksumSHA1": "924rRT8eFRsA+XUlXBBs43vgU4s=",
+			"path": "github.com/weblazy/teleport/quic",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
+		},
+		{
 			"checksumSHA1": "cyu+G7jyl1q0h1snFw5fQVASpCg=",
 			"path": "github.com/weblazy/teleport/socket",
 			"revision": "d16b27b021dc3ee1f3233d13501bdfd882f81383",
 			"revisionTime": "2019-10-23T07:54:00Z"
+		},
+		{
+			"checksumSHA1": "ANW0bBzpUgprADrIxCX84xrP+S0=",
+			"path": "github.com/weblazy/teleport/socket",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
 		},
 		{
 			"checksumSHA1": "2T7k0CxwH80kPKViByhhT+1Yltw=",
@@ -251,10 +233,28 @@
 			"revisionTime": "2019-10-23T07:54:00Z"
 		},
 		{
+			"checksumSHA1": "9BCuM9eOcnhuwmU9ph2Bg5EbHs4=",
+			"path": "github.com/weblazy/teleport/utils",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
+		},
+		{
+			"checksumSHA1": "Lk4o7hO7BxY8rQTyEMnAYmJa3tI=",
+			"path": "github.com/weblazy/teleport/utils/color",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
+		},
+		{
 			"checksumSHA1": "uHcovnCYTBHuqAr8pOkzcKLS0tc=",
 			"path": "github.com/weblazy/teleport/utils/color",
 			"revision": "d16b27b021dc3ee1f3233d13501bdfd882f81383",
 			"revisionTime": "2019-10-23T07:54:00Z"
+		},
+		{
+			"checksumSHA1": "uTvZNFRZyQ9RKK/iHy2zBdDQ37Q=",
+			"path": "github.com/weblazy/teleport/xfer",
+			"revision": "f81799e93a1f31925c5f93f3974e74ce8cb921b6",
+			"revisionTime": "2019-09-18T14:26:54Z"
 		},
 		{
 			"checksumSHA1": "vLxNkvkQaXD0YYLdI3X1KGCkXZU=",

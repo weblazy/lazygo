@@ -41,7 +41,7 @@ type Client struct {
 
 // Add handles addition request
 func (c *Client) Receive(args *string) *tp.Status {
-	logx.Error(args)
+	logx.Error(*args)
 	tpcluster.BindUid("Client1", c.PushCtx)
 	tpcluster.SendToUid("Client1", "/client/onreceive", "send message ok")
 	return nil

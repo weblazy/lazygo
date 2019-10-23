@@ -9,7 +9,7 @@ import (
 func main() {
 	defer tp.SetLoggerLevel("ERROR")()
 
-	cli := tp.NewPeer(tp.PeerConfig{})
+	cli := tp.NewPeer(tp.PeerConfig{}, nil)
 	defer cli.Close()
 	// cli.SetTLSConfig(&tls.Config{InsecureSkipVerify: true})
 
