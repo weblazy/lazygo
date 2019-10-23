@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+// protoc --go_out=plugins=grpc:. configure.proto
+// goctl -p configure.proto
+
+package configureproto;
+
+//rpc
+message RpcRequest{
+    string username = 1; //用户名
+    string password = 2; //密码
+    string name = 3; //链接名
+    string env = 4; //dev,pre,pro
+    string network = 5; //inside,outsite内网外网
+}
+
+//响应
+message RpcResponse{
+    string source = 1; //链接Host
+}
+
+//其他类型
+message SourceRequest{
+    string username = 1; //用户名
+    string password = 2; //密码
+    string name = 3; //链接名
+}
+
+//响应
+message SourceResponse{
+    string source = 1; //链接Host,kafka,es,clickhouse等
+}
+
+//获取服务信息
+message ServerRequest{
+    string username = 1; //用户名
+    string password = 2; //密码
+    string name = 3; //链接名
+}
+
+//响应
+message ServerResponse{
+    string name = 1; //服务名
+    int64 port = 2; //端口
+    string namespace = 3; //命名空间
+    string serverType = 4; //服务类型
+}
+
+service ConfigureHandler {
+    //获取rpc链接信息
+    rpc Rpc(RpcRequest) returns (RpcResponse){};
+    //获取server链接信息
+    rpc Server(ServerRequest) returns (ServerResponse){};
+    //获取其他链接信息
+    rpc Source(SourceRequest) returns (SourceResponse){};
+}

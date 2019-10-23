@@ -1,0 +1,14 @@
+{"@timestamp":"2019-10-09T18:07:58.957+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-09T18:08:55.061+08","level":"info","content":"map[BodyBytesSent:0 DuringTime:277.933µs HTTPReferrer: HTTPUserAgent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36 Host:localhost:9001 RemoteUser: Request:GET /Index/Hi HTTP/1.1 RequestMethod:GET RequestTime:2019-10-09 18:08:55.061333 +0800 CST m=+56.105996238 ServerProtocol:HTTP/1.1]"}
+{"@timestamp":"2019-10-14T14:15:06.122+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:29:00.188+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:30:08.711+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:31:19.312+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:31:41.023+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:32:01.932+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:32:13.268+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:32:35.740+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:33:13.555+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T14:34:58.226+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T15:26:46.403+08","level":"info","content":"http server Running on http://:9001"}
+{"@timestamp":"2019-10-14T15:48:13.457+08","level":"info","content":"http server Running on http://:9001"}

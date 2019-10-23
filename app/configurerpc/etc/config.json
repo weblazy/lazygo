@@ -1,0 +1,14 @@
+{
+    
+    "RpcServerConf": {
+        "Log": {
+            "ServiceName": "configurerpc-api",
+            "Mode": "console",
+            "Path": "logs",
+            "Compress": true
+        },
+        "ListenOn": "0.0.0.0:9000",
+        "Auth": false,
+        "Timeout": 2000
+    }
+}

@@ -1,0 +1,53 @@
+{
+        "Log": {
+            "ServiceName": "crmuser-api",
+            "Mode": "file",
+            "Path": "logs",
+            "Compress": true
+        },
+        "Timeout": 90,
+        "Port":9001,
+    "ConfigureRpc": {
+        "Server": "127.0.0.1:9000",
+        "App": "app",
+        "Token": "token"
+    },
+    "RedisConf": {
+        "Host": "127.0.0.1:6379",
+        "Type": "node",
+        "Pass": ""
+    },
+    "AuthList":[
+        {
+            "RedisConf":{
+                "Host": "127.0.0.1:6379",
+                "Type": "node",
+                "Pass": ""
+            },
+            "Position":0
+        },  {
+            "RedisConf": {
+                "Host": "127.0.0.2:6379",
+                "Type": "node",
+                "Pass": ""
+            },
+            "Position": 250
+        },{
+            "RedisConf": {
+                "Host": "127.0.0.3:6379",
+                "Type": "node",
+                "Pass": ""
+            },
+            "Position": 500
+        },
+        {
+            "RedisConf": {
+                "Host": "127.0.0.4:6379",
+                "Type": "node",
+                "Pass": ""
+            },
+            "Position": 750
+        }
+    ],
+    "MysqlDataSource": "root:123456@tcp(127.0.0.1:3306)/jumpserver"
+}

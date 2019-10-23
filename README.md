@@ -1,2 +1,2 @@
 # lazygo
-api,rpc,tcp长链接框架
+大道至简
