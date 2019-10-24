@@ -17,7 +17,7 @@ func main() {
 		CountTime:   true,
 		ListenPort:  9090,
 		PrintDetail: true,
-	}, nil)
+	})
 	// srv.SetTLSConfig(tp.GenerateTLSConfigForServer())
 
 	// router

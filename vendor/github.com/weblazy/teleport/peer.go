@@ -117,11 +117,10 @@ type peer struct {
 	redialInterval     time.Duration
 	localAddr          net.Addr
 	redialTimes        int32
-	onConnect          func(session Session)
 }
 
 // NewPeer creates a new peer.
-func NewPeer(cfg PeerConfig, onConnect func(session Session), globalLeftPlugin ...Plugin) Peer {
+func NewPeer(cfg PeerConfig, globalLeftPlugin ...Plugin) Peer {
 	doPrintPid()
 	pluginContainer := newPluginContainer()
 	pluginContainer.AppendLeft(globalLeftPlugin...)
@@ -147,7 +146,6 @@ func NewPeer(cfg PeerConfig, onConnect func(session Session), globalLeftPlugin .
 		countTime:          cfg.CountTime,
 		redialTimes:        cfg.RedialTimes,
 		listeners:          make(map[net.Listener]struct{}),
-		onConnect:          onConnect,
 	}
 
 	if c, err := codec.GetByName(cfg.DefaultBodyCodec); err != nil {
@@ -424,7 +422,6 @@ func (p *peer) serveListener(lis net.Listener, protoFunc ...ProtoFunc) error {
 			Infof("accept ok (network:%s, addr:%s, id:%s)", network, sess.RemoteAddr().String(), sess.ID())
 			p.sessHub.set(sess)
 			sess.changeStatus(statusOk)
-			p.onConnect(sess)
 			sess.startReadAndHandle()
 		})
 	}

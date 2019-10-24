@@ -81,12 +81,8 @@ func StartNode(cfg NodeConf, controllers []interface{}, globalLeftPlugin ...tp.P
 		timer:           timer,
 	}
 
-	nodeInfo.transPeer = tp.NewPeer(cfg.TransPeerConf, func(session tp.Session) {
-		logx.Errorf("node onConnect to node %s", session.ID())
-	}, globalLeftPlugin...)
-	nodeInfo.clientPeer = tp.NewPeer(cfg.ClientPeerConf, func(session tp.Session) {
-		logx.Errorf("client onConnect to node %s", session.ID())
-	}, globalLeftPlugin...)
+	nodeInfo.transPeer = tp.NewPeer(cfg.TransPeerConf, globalLeftPlugin...)
+	nodeInfo.clientPeer = tp.NewPeer(cfg.ClientPeerConf, globalLeftPlugin...)
 	for _, value := range controllers {
 		nodeInfo.clientPeer.RoutePush(value)
 	}
