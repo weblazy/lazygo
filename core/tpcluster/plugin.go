@@ -37,7 +37,7 @@ func (p *postDisconnectPlugin) Name() string {
 func (p *postDisconnectPlugin) PostDisconnect(session tp.BaseSession) *tp.Status {
 	sid := session.ID()
 	node := nodeInfo.userHashRing.Get(sid)
-	if uid, ok := nodeInfo.clientIdBindUid[sid]; ok {
+	if uid := session.LoadUid(); uid != "" {
 		node.Extra.(*redis.Redis).Hdel(userPrefix+uid, nodeInfo.transAddress)
 	}
 	return nil

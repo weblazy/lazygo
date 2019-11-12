@@ -40,22 +40,21 @@ type (
 		// businessConnections map[string]tp.Session
 	}
 	NodeInfo struct {
-		bizRedis        *redis.Redis
-		nodeConf        NodeConf
-		masterSession   tp.Session
-		nodeSessions    map[string]tp.CtxSession
-		clientSessions  map[string]tp.Session
-		uidSessions     *syncx.ConcurrentDoubleMap
-		groupSessions   *syncx.ConcurrentDoubleMap
-		clientIdBindUid map[string]string
-		clientPeer      tp.Peer
-		clientAddress   string
-		transPeer       tp.Peer
-		transAddress    string
-		timer           *timingwheel.TimingWheel
-		startTime       time.Time
-		userHashRing    *unsafehash.Consistent
-		groupHashRing   *unsafehash.Consistent
+		bizRedis       *redis.Redis
+		nodeConf       NodeConf
+		masterSession  tp.Session
+		nodeSessions   map[string]tp.CtxSession
+		clientSessions map[string]tp.Session
+		uidSessions    *syncx.ConcurrentDoubleMap
+		groupSessions  *syncx.ConcurrentDoubleMap
+		clientPeer     tp.Peer
+		clientAddress  string
+		transPeer      tp.Peer
+		transAddress   string
+		timer          *timingwheel.TimingWheel
+		startTime      time.Time
+		userHashRing   *unsafehash.Consistent
+		groupHashRing  *unsafehash.Consistent
 	}
 
 	Message struct {
@@ -93,17 +92,16 @@ func StartNode(cfg NodeConf, controllers []interface{}, globalLeftPlugin ...tp.P
 		cfg.PingInterval = 10
 	}
 	nodeInfo = NodeInfo{
-		nodeConf:        cfg,
-		nodeSessions:    make(map[string]tp.CtxSession),
-		clientSessions:  make(map[string]tp.Session),
-		bizRedis:        redis,
-		uidSessions:     syncx.NewConcurrentDoubleMap(32),
-		groupSessions:   syncx.NewConcurrentDoubleMap(32),
-		clientIdBindUid: make(map[string]string),
-		startTime:       time.Now(),
-		timer:           timer,
-		userHashRing:    unsafehash.NewConsistent(cfg.RedisMaxCount),
-		groupHashRing:   unsafehash.NewConsistent(cfg.RedisMaxCount),
+		nodeConf:       cfg,
+		nodeSessions:   make(map[string]tp.CtxSession),
+		clientSessions: make(map[string]tp.Session),
+		bizRedis:       redis,
+		uidSessions:    syncx.NewConcurrentDoubleMap(32),
+		groupSessions:  syncx.NewConcurrentDoubleMap(32),
+		startTime:      time.Now(),
+		timer:          timer,
+		userHashRing:   unsafehash.NewConsistent(cfg.RedisMaxCount),
+		groupHashRing:  unsafehash.NewConsistent(cfg.RedisMaxCount),
 	}
 	port := strconv.FormatInt(int64(cfg.ClientPeerConf.ListenPort), 10)
 	nodeInfo.clientAddress = cfg.ClientPeerConf.LocalIP + ":" + port
@@ -198,10 +196,10 @@ func BindUid(uid string, context tp.PreCtx) (int, *tp.Status) {
 	sid := context.Session().ID()
 	session, _ := context.Peer().GetSession(sid)
 	nodeInfo.uidSessions.StoreWithPlugin(uid, sid, session, func() {
-		if oldUid, ok := nodeInfo.clientIdBindUid[sid]; ok && oldUid != uid {
+		oldUid := session.CasUid(uid)
+		if oldUid != "" && oldUid != uid {
 			nodeInfo.uidSessions.DeleteWithoutLock(oldUid, sid)
 		}
-		nodeInfo.clientIdBindUid[sid] = uid
 	})
 	return 0, nil
 }
