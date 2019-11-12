@@ -3,6 +3,7 @@ package main
 import (
 	// "fmt"
 	"github.com/weblazy/teleport"
+	"lazygo/core/database/redis"
 	"lazygo/core/logx"
 	"lazygo/core/tpcluster"
 	// "time"
@@ -28,6 +29,10 @@ func main() {
 			CountTime:   true,
 			ListenPort:  5555,
 			PrintDetail: true,
+		},
+		RedisConf: redis.RedisConf{
+			Host: "127.0.0.1:6379",
+			Type: "node",
 		},
 		MasterAddress: "127.0.0.1:9090",
 		Password:      "skdss",

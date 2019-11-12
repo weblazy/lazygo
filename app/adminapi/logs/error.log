@@ -1,3 +1,4 @@
 {"@timestamp":"2019-10-09T18:08:55.061+08","level":"error","content":"IndexController.go:78 { 0}"}
 {"@timestamp":"2019-10-09T18:08:55.061+08","level":"error","content":"IndexController.go:79 "}
 {"@timestamp":"2019-10-09T18:08:55.061+08","level":"error","content":"IndexController.go:80 0 strconv.ParseInt: parsing \"\": invalid syntax"}
+{"@timestamp":"2019-10-30T18:46:58.572+08","level":"error","content":"IndexController.go:66 EOF"}

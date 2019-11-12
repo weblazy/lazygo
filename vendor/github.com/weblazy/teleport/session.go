@@ -24,6 +24,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+	"unsafe"
 
 	"github.com/henrylee2cn/goutil"
 	"github.com/henrylee2cn/goutil/coarsetime"
@@ -110,6 +111,12 @@ type (
 		Peer() Peer
 		// ID returns the session id.
 		ID() string
+		//LoadUid return the session uid
+		LoadUid() string
+		//StoreUid return the session uid
+		StoreUid(string)
+		//CasUid return the session uid
+		CasUid(string) string
 		// LocalAddr returns the local network address.
 		LocalAddr() net.Addr
 		// RemoteAddr returns the remote network address.
@@ -123,6 +130,12 @@ type (
 	CtxSession interface {
 		// ID returns the session id.
 		ID() string
+		//LoadUid return the session uid
+		LoadUid() string
+		//StoreUid return the session uid
+		StoreUid(string)
+		//CasUid return the session uid
+		CasUid(string) string
 		// LocalAddr returns the local network address.
 		LocalAddr() net.Addr
 		// RemoteAddr returns the remote network address.
@@ -199,6 +212,7 @@ type session struct {
 	seq                            int32
 	status                         int32
 	didCloseNotify                 int32
+	uid                            string
 }
 
 func newSession(peer *peer, conn net.Conn, protoFuncs []ProtoFunc) *session {
@@ -324,6 +338,30 @@ func (s *session) SetID(newID string) {
 	hub.set(s)
 	hub.delete(oldID)
 	Tracef("session changes id: %s -> %s", oldID, newID)
+}
+
+// LoadUid returns the session uid.
+func (s *session) LoadUid() string {
+	pointer := unsafe.Pointer(&s.uid)
+	return *(*string)(atomic.LoadPointer(&pointer))
+}
+
+// StoreUid sets the session uid.
+func (s *session) StoreUid(newUid string) {
+	pointer := unsafe.Pointer(&s.uid)
+	atomic.StorePointer(&pointer, unsafe.Pointer(&newUid))
+}
+
+// CasUid sets the session uid and return oldUid
+func (s *session) CasUid(newUid string) string {
+	newValue := unsafe.Pointer(&newUid)
+	pointer := unsafe.Pointer(&s.uid)
+	for {
+		oldValue := atomic.LoadPointer(&pointer)
+		if atomic.CompareAndSwapPointer(&pointer, oldValue, newValue) {
+			return *(*string)(oldValue)
+		}
+	}
 }
 
 // ControlFD invokes f on the underlying connection's file

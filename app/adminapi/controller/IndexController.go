@@ -61,15 +61,15 @@ func (c *IndexController) Mysql() {
 }
 
 func (c *IndexController) Redis() {
-	// err := common.BizRedis.Set("tes","678")
-	// 	if err != nil {
-	// 	logx.Error(err)
-	// }
-	tes, err := common.BizRedis.Get("tes")
+	ipList, err := common.BizRedis.ZrangeWithScores("tpcluster_node", 0, 2)
 	if err != nil {
 		logx.Error(err)
 	}
-	c.W.Write([]byte(tes))
+	ipStr, err := json.Marshal(ipList)
+	if err != nil {
+		logx.Error(err)
+	}
+	c.W.Write(ipStr)
 }
 
 func (c *IndexController) Hi() {

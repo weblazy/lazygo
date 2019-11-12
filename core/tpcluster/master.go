@@ -3,6 +3,7 @@ package tpcluster
 import (
 	// "encoding/json"
 	// "fmt"
+	"github.com/henrylee2cn/goutil"
 	"github.com/weblazy/teleport"
 	"lazygo/core/logx"
 	"lazygo/core/timingwheel"
@@ -16,19 +17,15 @@ type (
 		MasterAddress  string
 		Password       string
 	}
-	Master struct {
-		tp.CallCtx
-	}
 	MasterInfo struct {
-		masterConf   MasterConf
-		nodeSessions map[string]tp.CtxSession
-		nodeAddress  map[string]string
-		timer        *timingwheel.TimingWheel
-		startTime    time.Time
+		masterConf MasterConf
+		nodeMap    goutil.Map
+		timer      *timingwheel.TimingWheel
+		startTime  time.Time
 	}
-	Auth struct {
-		TransAddress string
-		Password     string
+	nodeSession struct {
+		session tp.Session
+		address string
 	}
 )
 
@@ -50,15 +47,14 @@ func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 		logx.Fatal(err)
 	}
 	masterInfo = MasterInfo{
-		masterConf:   cfg,
-		nodeSessions: make(map[string]tp.CtxSession),
-		nodeAddress:  make(map[string]string),
-		startTime:    time.Now(),
-		timer:        timer,
+		masterConf: cfg,
+		nodeMap:    goutil.AtomicMap(),
+		startTime:  time.Now(),
+		timer:      timer,
 	}
 	peer := tp.NewPeer(cfg.MasterPeerConf, globalLeftPlugin...)
-	master := new(Master)
-	peer.RouteCall(master)
+	peer.RouteCall(new(MasterCall))
+	peer.RoutePush(new(MasterPush))
 	peer.ListenAndServe()
 
 }
@@ -86,40 +82,42 @@ func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 // 	}
 // }
 
-func (m *Master) Auth(args *Auth) (int, *tp.Status) {
-	session := m.Session()
-	sessionId := session.ID()
-
-	peer := m.Peer()
-	psession, ok := peer.GetSession(sessionId)
-	if args.Password != masterInfo.masterConf.Password && ok {
-		logx.Errorf("密码错误，非法链接:%s", sessionId)
-		psession.Close()
-		return 0, nil
-	}
-	masterInfo.nodeSessions[sessionId] = session
-	masterInfo.nodeAddress[sessionId] = args.TransAddress
-	// go func(){
-	// 	select{
-	// 	case <- m.Session().CloseNotify():
-	// 		m.OnClose()
-	// }
-	// }()
-	m.broadcastAddresses()
-	return 1, nil
-}
-
-func (m *Master) broadcastAddresses() {
+func (mi *MasterInfo) broadcastAddresses() {
 	nodeList := make([]string, 0)
-	for _, value := range masterInfo.nodeAddress {
-		nodeList = append(nodeList, value)
-	}
+	mi.nodeMap.Range(func(k interface{}, v interface{}) bool {
+		nodeList = append(nodeList, v.(nodeSession).address)
+		return true
+	})
 	var result int
-	for _, value := range masterInfo.nodeSessions {
-		value.Call(
-			"/node/updatenodelist",
+	len := mi.nodeMap.Len()
+	callCmdChan := make(chan tp.CallCmd, len)
+	mi.nodeMap.Range(func(k interface{}, v interface{}) bool {
+		v.(nodeSession).session.AsyncCall(
+			"/node_call/updatenodelist",
 			nodeList,
 			&result,
+			callCmdChan,
 		)
+		return true
+	})
+	for callCmd := range callCmdChan {
+		_, _ = callCmd.Reply()
+	}
+}
+
+// set sets a *session.
+func (mi *MasterInfo) setSession(sess tp.Session, address string) {
+	sid := sess.ID()
+	node := &nodeSession{
+		address: address,
+		session: sess,
+	}
+	_node, loaded := mi.nodeMap.LoadOrStore(sid, node)
+	if !loaded {
+		return
+	}
+	mi.nodeMap.Store(sid, node)
+	if oldSess := _node.(*nodeSession).session; sess != oldSess {
+		oldSess.Close()
 	}
 }

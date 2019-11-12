@@ -3,7 +3,7 @@ package auth
 import (
 	"fmt"
 	"lazygo/core/aescode"
-	"lazygo/core/consistenthash"
+	"lazygo/core/consistenthash/unsafehash"
 	"lazygo/core/database/redis"
 	"strconv"
 	"strings"
@@ -24,7 +24,7 @@ type (
 	}
 	Auth struct {
 		Auth      bool
-		cHashRing *consistenthash.Consistent
+		cHashRing *unsafehash.Consistent
 	}
 )
 
@@ -36,13 +36,13 @@ var (
 )
 
 func InitAuth(conf AuthConfig) error {
-	cHashRing := consistenthash.NewConsistent(conf.MaxCount)
+	cHashRing := unsafehash.NewConsistent(conf.MaxCount)
 	for _, value := range conf.RedisNodeList {
 		if err := value.RedisConf.Validate(); err != nil {
 			return err
 		}
 		redis := redis.NewRedis(value.RedisConf.Host, value.RedisConf.Type, value.RedisConf.Pass)
-		cHashRing.Add(consistenthash.NewNode(value.RedisConf.Host, value.Position, redis))
+		cHashRing.Add(unsafehash.NewNode(value.RedisConf.Host, value.Position, redis))
 	}
 	AuthManager.cHashRing = cHashRing
 	return nil

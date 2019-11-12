@@ -23,7 +23,7 @@ type Map interface {
 	LoadOrStore(key, value interface{}) (actual interface{}, loaded bool)
 	// Range calls f sequentially for each key and value present in the map.
 	// If f returns false, range stops the iteration.
-	Range(f func(key, value interface{}) bool)
+	Range(f func(key, value interface{}) bool) bool
 	// Random returns a pair kv randomly.
 	// If exist=false, no kv data is exist.
 	Random() (key, value interface{}, exist bool)
@@ -98,14 +98,15 @@ func (m *rwMap) Delete(key interface{}) {
 
 // Range calls f sequentially for each key and value present in the map.
 // If f returns false, range stops the iteration.
-func (m *rwMap) Range(f func(key, value interface{}) bool) {
+func (m *rwMap) Range(f func(key, value interface{}) bool) bool{
 	m.rwmu.RLock()
 	defer m.rwmu.RUnlock()
 	for k, v := range m.data {
 		if !f(k, v) {
-			break
+			return false
 		}
 	}
+	return true
 }
 
 // Clear clears all current data in the map.
@@ -495,7 +496,7 @@ func (e *entry) delete() (hadValue bool) {
 //
 // Range may be O(N) with the number of elements in the map even if f returns
 // false after a constant number of calls.
-func (m *atomicMap) Range(f func(key, value interface{}) bool) {
+func (m *atomicMap) Range(f func(key, value interface{}) bool)bool {
 	// We need to be able to iterate over all of the keys that were already
 	// present at the start of the call to Range.
 	// If read.amended is false, then read.m satisfies that property without
@@ -523,9 +524,10 @@ func (m *atomicMap) Range(f func(key, value interface{}) bool) {
 			continue
 		}
 		if !f(k, v) {
-			break
+			return false
 		}
 	}
+	return true
 }
 
 // Clear clears all current data in the map.

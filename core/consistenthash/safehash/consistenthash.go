@@ -1,4 +1,4 @@
-package consistenthash
+package safehash
 
 import (
 	"hash/crc32"
