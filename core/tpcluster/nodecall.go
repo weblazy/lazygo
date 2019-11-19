@@ -10,7 +10,7 @@ type NodeCall struct {
 }
 
 // Add handles addition request
-func (n *NodeCall) Updatenodelist(nodeList *[]string) (int64, *tp.Status) {
+func (n *NodeCall) UpdateNodeList(nodeList *[]string) (int64, *tp.Status) {
 	for _, value := range *nodeList {
 		sess, stat := nodeInfo.transPeer.Dial(value)
 		if !stat.OK() {

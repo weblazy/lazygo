@@ -19,10 +19,10 @@ type (
 		RedisMaxCount  uint32
 		ClientPeerConf tp.PeerConfig
 		TransPeerConf  tp.PeerConfig
-		TransPort      int64
-		MasterAddress  string
-		Password       string
-		PingInterval   int
+		TransPort      int64  //Internal communication port
+		MasterAddress  string //Master address
+		Password       string //Password for auth when connect to master
+		PingInterval   int    //Heartbeat interval
 	}
 
 	Test struct {
@@ -47,14 +47,14 @@ type (
 		clientSessions map[string]tp.Session
 		uidSessions    *syncx.ConcurrentDoubleMap
 		groupSessions  *syncx.ConcurrentDoubleMap
-		clientPeer     tp.Peer
-		clientAddress  string
-		transPeer      tp.Peer
-		transAddress   string
-		timer          *timingwheel.TimingWheel
+		clientPeer     tp.Peer                  //External communication peer
+		clientAddress  string                   //External communication address
+		transPeer      tp.Peer                  //Internal communication peer
+		transAddress   string                   //Internal communication address
+		timer          *timingwheel.TimingWheel //Timingwheel
 		startTime      time.Time
-		userHashRing   *unsafehash.Consistent
-		groupHashRing  *unsafehash.Consistent
+		userHashRing   *unsafehash.Consistent //UsHash ring storage userId
+		groupHashRing  *unsafehash.Consistent //UsHash ring storage groupId
 	}
 
 	Message struct {
@@ -113,40 +113,38 @@ func StartNode(cfg NodeConf, controllers []interface{}, globalLeftPlugin ...tp.P
 	}
 	nodeInfo.transPeer.RouteCall(new(NodeCall))
 	nodeInfo.transPeer.RoutePush(new(NodePush))
-	go func() {
-		nodeInfo.transPeer.ListenAndServe()
-	}()
+	go nodeInfo.transPeer.ListenAndServe()
 	SendPing()
 	UpdateRedis()
-	go func() {
-		sess, stat := nodeInfo.transPeer.Dial(cfg.MasterAddress)
-		if !stat.OK() {
-			tp.Fatalf("%v", stat)
-		}
-		nodeInfo.masterSession = sess
-		port := strconv.FormatInt(int64(cfg.TransPeerConf.ListenPort), 10)
-		nodeInfo.transAddress = cfg.TransPeerConf.LocalIP + ":" + port
-		var result int
-		auth := &Auth{
-			Password:     nodeInfo.nodeConf.Password,
-			TransAddress: nodeInfo.transAddress,
-		}
-		stat = sess.Call("/master_call/auth",
-			auth,
-			&result,
-		).Status()
-	}()
+	go ConnectToMaster(cfg)
 	nodeInfo.clientPeer.ListenAndServe()
 }
 
-func OnClientConnect(ping *string) {
-
+//Connect to master
+func ConnectToMaster(cfg NodeConf) {
+	sess, stat := nodeInfo.transPeer.Dial(cfg.MasterAddress)
+	if !stat.OK() {
+		tp.Fatalf("%v", stat)
+	}
+	nodeInfo.masterSession = sess
+	port := strconv.FormatInt(int64(cfg.TransPeerConf.ListenPort), 10)
+	nodeInfo.transAddress = cfg.TransPeerConf.LocalIP + ":" + port
+	var result int
+	auth := &Auth{
+		Password:     nodeInfo.nodeConf.Password,
+		TransAddress: nodeInfo.transAddress,
+	}
+	stat = sess.Call("/master_call/auth",
+		auth,
+		&result,
+	).Status()
 }
 
 func OnClientClose(ping *string) {
 
 }
 
+//Determine if a uid is online
 func IsOnline(uid string) bool {
 	now := time.Now().Unix()
 	node := nodeInfo.userHashRing.Get(uid)
@@ -163,6 +161,7 @@ func IsOnline(uid string) bool {
 	return false
 }
 
+//Get online users in the group
 func GroupOnline(gid string) []string {
 	now := time.Now().Unix()
 	node := nodeInfo.groupHashRing.Get(gid)
@@ -180,18 +179,20 @@ func GroupOnline(gid string) []string {
 	return uids
 }
 
+//Get session from PreCtx
 func GetSession(context tp.PreCtx) tp.Session {
 	sid := context.Session().ID()
 	session, _ := context.Peer().GetSession(sid)
 	return session
 }
 
-func BindUid(uid string, context tp.PreCtx) (int, *tp.Status) {
+//Get bind uid with session
+func BindUid(uid string, context tp.PreCtx) error {
 	now := time.Now().Unix()
 	node := nodeInfo.userHashRing.Get(uid)
 	err := node.Extra.(*redis.Redis).Hset(userPrefix+uid, nodeInfo.transAddress, strconv.FormatInt(now, 10))
 	if err != nil {
-		return 0, nil
+		return err
 	}
 	sid := context.Session().ID()
 	session, _ := context.Peer().GetSession(sid)
@@ -201,9 +202,10 @@ func BindUid(uid string, context tp.PreCtx) (int, *tp.Status) {
 			nodeInfo.uidSessions.DeleteWithoutLock(oldUid, sid)
 		}
 	})
-	return 0, nil
+	return nil
 }
 
+//Send message to a uid
 func SendToUid(uid string, path string, req interface{}) (int, *tp.Status) {
 	now := time.Now().Unix()
 	node := nodeInfo.userHashRing.Get(uid)
@@ -215,7 +217,6 @@ func SendToUid(uid string, path string, req interface{}) (int, *tp.Status) {
 				if now > expir {
 					source <- key
 				}
-
 			}
 		}, func(item interface{}) {
 			sid := item.(string)
@@ -236,18 +237,21 @@ func SendToUid(uid string, path string, req interface{}) (int, *tp.Status) {
 	return 0, nil
 }
 
+//Join a group
 func JoinGroup(gid string, session tp.Session) (int, *tp.Status) {
 	sid := session.ID()
 	nodeInfo.groupSessions.Store(gid, sid, session)
 	return 0, nil
 }
 
+//Leave group
 func LeaveGroup(gid string, session tp.Session) (int, *tp.Status) {
 	sid := session.ID()
 	nodeInfo.groupSessions.Delete(gid, sid)
 	return 0, nil
 }
 
+//Send message to group
 func SendToGroup(gid string, path string, req interface{}) (int, *tp.Status) {
 	sessionMap, ok := nodeInfo.groupSessions.LoadMap(gid)
 	if ok {
@@ -307,6 +311,7 @@ func SendToGroupNew(gid string, path string, req interface{}) (int, *tp.Status) 
 	return 0, nil
 }
 
+//Heartbeat
 func SendPing() {
 	go func() {
 		for {
@@ -329,6 +334,7 @@ func SendPing() {
 	}()
 }
 
+//Update clients num
 func UpdateRedis() {
 	go func() {
 		for {

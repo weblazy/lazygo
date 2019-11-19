@@ -1,31 +1,29 @@
 package tpcluster
 
 import (
-	// "encoding/json"
-	// "fmt"
-	"github.com/henrylee2cn/goutil"
-	"github.com/weblazy/teleport"
+	"time"
+
 	"lazygo/core/logx"
 	"lazygo/core/timingwheel"
-	"time"
+
+	"github.com/henrylee2cn/goutil"
+	"github.com/weblazy/teleport"
 )
 
 type (
 	MasterConf struct {
-		MasterPeerConf tp.PeerConfig
-		TransPort      int64
-		MasterAddress  string
-		Password       string
+		MasterPeerConf tp.PeerConfig //Peer config
+		Password       string        //Password for auth when node connect on
 	}
 	MasterInfo struct {
 		masterConf MasterConf
-		nodeMap    goutil.Map
+		nodeMap    goutil.Map // V is nodeSession
 		timer      *timingwheel.TimingWheel
 		startTime  time.Time
 	}
 	nodeSession struct {
 		session tp.Session
-		address string
+		address string //Outside address
 	}
 )
 
@@ -33,7 +31,7 @@ var (
 	masterInfo MasterInfo
 )
 
-// 启动master节点.
+// Start master node.
 func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 	timer, err := timingwheel.NewTimingWheel(time.Second, 300, func(k, v interface{}) {
 		logx.Errorf("%s auth timeout", k)
@@ -82,6 +80,7 @@ func StartMaster(cfg MasterConf, globalLeftPlugin ...tp.Plugin) {
 // 	}
 // }
 
+//Notify all node nodes that new nodes have joined
 func (mi *MasterInfo) broadcastAddresses() {
 	nodeList := make([]string, 0)
 	mi.nodeMap.Range(func(k interface{}, v interface{}) bool {
@@ -93,7 +92,7 @@ func (mi *MasterInfo) broadcastAddresses() {
 	callCmdChan := make(chan tp.CallCmd, len)
 	mi.nodeMap.Range(func(k interface{}, v interface{}) bool {
 		v.(nodeSession).session.AsyncCall(
-			"/node_call/updatenodelist",
+			"/node_call/update_node_list",
 			nodeList,
 			&result,
 			callCmdChan,
