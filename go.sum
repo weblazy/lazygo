@@ -18,8 +18,6 @@ github.com/go-redis/redis v6.15.7+incompatible h1:3skhDh95XQMpnqeqNftPkQD9jL9e5e
 github.com/go-redis/redis v6.15.7+incompatible/go.mod h1:NAIEuMOZ/fxfXJIrKDQDz8wamY7mA7PouImQ2Jvg6kA=
 github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
 github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
-github.com/weblazy/builder v0.3.4 h1:FxkeGB4Cggdw3tPwutLCpfjng2jugfkg6LDMrd/KsoY=
-github.com/weblazy/builder v0.3.4/go.mod h1:KxkQkNN1DpPKTedxXyTQcmH+rXfvk4LZ9SOOBoZBAxw=
 github.com/go-xorm/sqlfiddle v0.0.0-20180821085327-62ce714f951a/go.mod h1:56xuuqnHyryaerycW3BfssRdxQstACi0Epw/yC5E2xM=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
 github.com/gogo/protobuf v1.3.1 h1:DqDEcV5aeaTmdFBePNpYsp3FlcVH/2ISVVM9Qf8PSls=
@@ -64,6 +62,10 @@ github.com/tidwall/gjson v1.2.2/go.mod h1:P256ACg0Mn+j1RXIDXoss50DeIABTYK1PULOJH
 github.com/tidwall/gjson v1.6.0/go.mod h1:P256ACg0Mn+j1RXIDXoss50DeIABTYK1PULOJHhxOls=
 github.com/tidwall/match v1.0.1/go.mod h1:LujAq0jyVjBy028G1WhWfIzbpQfMO8bBZ6Tyb0+pL9E=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
+github.com/weblazy/builder v1.1.1 h1:gSvd8ykrzGvC50DAtSZH/Oh30yc4XmiW4+R24M65w2E=
+github.com/weblazy/builder v1.1.1/go.mod h1:ddgD4Sy2nOS3elkLsovL4OhXenVYXwNE9g313MVeGaU=
+github.com/weblazy/builder v1.1.2 h1:ZtUA+5RbZfQWUNcMJMG1YX8vDzm0Ykp0UXaRNZOfvgs=
+github.com/weblazy/builder v1.1.2/go.mod h1:v+Wk5QaYO+9nSf53AO+kLQNxJQIH0+R+Axx6u6POSh8=
 github.com/weblazy/core v0.0.0-20200329134723-5cae838044cf h1:T638AqCjtYroXcn8gOEcw44Q9bB/fPO0xjOPSta5Zxo=
 github.com/weblazy/core v0.0.0-20200329134723-5cae838044cf/go.mod h1:RvAl43xTKA148nMUplYUnHoGsQDbV6PlH/1g3WiG278=
 github.com/weblazy/goutil v1.1.2 h1:gwwnUuNep7yt1//PiAckAepqLUJ7q0NRbgb8zBOMXh8=
