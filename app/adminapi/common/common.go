@@ -1,8 +1,8 @@
 package common
 
 import (
-	"lazygo/core/database/redis"
-	"lazygo/core/database/sqlx"
+	"github.com/weblazy/core/database/redis"
+	"github.com/weblazy/core/database/sqlx"
 )
 
 var (

@@ -1,9 +1,10 @@
 package main
 
 import (
-	tp "github.com/weblazy/teleport"
-	"lazygo/core/logx"
 	"time"
+
+	"github.com/weblazy/core/logx"
+	tp "github.com/weblazy/teleport"
 )
 
 func main() {

@@ -3,7 +3,8 @@ package rpcclient
 import (
 	"fmt"
 	"lazygo/app/configurerpc/configureproto"
-	"lazygo/core/rpcx"
+
+	"github.com/weblazy/core/rpcx"
 )
 
 var (

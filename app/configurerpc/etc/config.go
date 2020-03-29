@@ -1,8 +1,8 @@
 package etc
 
 import (
-	"lazygo/core/logx"
-	"lazygo/core/rpcx"
+	"github.com/weblazy/core/logx"
+	"github.com/weblazy/core/rpcx"
 )
 
 type (

@@ -2,7 +2,8 @@ package configureproto
 
 import (
 	"context"
-	"lazygo/core/timex"
+
+	"github.com/weblazy/core/timex"
 )
 
 type (

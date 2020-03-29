@@ -2,10 +2,10 @@ package main
 
 import (
 	// "fmt"
-	"github.com/weblazy/teleport"
-	"lazygo/core/database/redis"
-	"lazygo/core/logx"
-	"lazygo/core/tpcluster"
+	"github.com/weblazy/core/database/redis"
+	"github.com/weblazy/core/logx"
+	"github.com/weblazy/core/tpcluster"
+	tp "github.com/weblazy/teleport"
 	// "time"
 )
 

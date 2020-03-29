@@ -2,9 +2,10 @@ package etc
 
 import (
 	"lazygo/common/auth"
-	"lazygo/core/config"
-	"lazygo/core/database/redis"
-	"lazygo/core/rpcx"
+
+	"github.com/weblazy/core/config"
+	"github.com/weblazy/core/database/redis"
+	"github.com/weblazy/core/rpcx"
 )
 
 type (

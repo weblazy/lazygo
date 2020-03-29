@@ -2,8 +2,8 @@ package main
 
 import (
 	// "fmt"
-	"github.com/weblazy/teleport"
-	"lazygo/core/tpcluster"
+	"github.com/weblazy/core/tpcluster"
+	tp "github.com/weblazy/teleport"
 	// "time"
 )
 

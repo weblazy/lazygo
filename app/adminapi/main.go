@@ -7,12 +7,13 @@ import (
 	"lazygo/app/adminapi/etc"
 	"lazygo/common/auth"
 	"lazygo/common/rpcclient"
-	"lazygo/core/apix"
-	"lazygo/core/config"
-	"lazygo/core/database/redis"
-	"lazygo/core/database/sqlx"
-	"lazygo/core/logx"
 	_ "net/http/pprof"
+
+	"github.com/weblazy/core/apix"
+	"github.com/weblazy/core/config"
+	"github.com/weblazy/core/database/redis"
+	"github.com/weblazy/core/database/sqlx"
+	"github.com/weblazy/core/logx"
 )
 
 var configFile = flag.String("f", "etc/config.json", "the config file")

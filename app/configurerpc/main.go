@@ -3,13 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
-	"google.golang.org/grpc"
 	"lazygo/app/configurerpc/configureproto"
 	"lazygo/app/configurerpc/etc"
-	"lazygo/core/config"
-	"lazygo/core/logx"
-	"lazygo/core/rpcx"
 	"log"
+
+	"github.com/weblazy/core/config"
+	"github.com/weblazy/core/logx"
+	"github.com/weblazy/core/rpcx"
+	"google.golang.org/grpc"
 )
 
 var configFile = flag.String("f", "etc/config.json", "the config file")

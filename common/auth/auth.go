@@ -2,12 +2,13 @@ package auth
 
 import (
 	"fmt"
-	"lazygo/core/aescode"
-	"lazygo/core/consistenthash/unsafehash"
-	"lazygo/core/database/redis"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/weblazy/core/aescode"
+	"github.com/weblazy/core/consistenthash/unsafehash"
+	"github.com/weblazy/core/database/redis"
 )
 
 const maxCount = 1000

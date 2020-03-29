@@ -3,13 +3,14 @@ package controller
 import (
 	"context"
 	"encoding/json"
-	_ "github.com/go-sql-driver/mysql" // import your used driver
-	"github.com/go-xorm/builder"
 	"lazygo/app/adminapi/common"
 	"lazygo/app/configurerpc/configureproto"
 	"lazygo/common/rpcclient"
-	"lazygo/core/apix"
-	"lazygo/core/logx"
+
+	_ "github.com/go-sql-driver/mysql" // import your used driver
+	"github.com/weblazy/builder"
+	"github.com/weblazy/core/apix"
+	"github.com/weblazy/core/logx"
 )
 
 type (
