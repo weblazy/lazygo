@@ -5,7 +5,6 @@ go 1.12
 require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.3.5
-	github.com/tidwall/gjson v1.6.0 // indirect
 	github.com/weblazy/builder v1.1.2
 	github.com/weblazy/core v0.0.0-20200329134723-5cae838044cf
 	github.com/weblazy/teleport v1.1.0
